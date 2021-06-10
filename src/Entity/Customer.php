@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -38,6 +39,21 @@ class Customer
      * @Assert\Email(message="L'adresse email fournie n'est pas bien formaté")
      */
     public string $email;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="customers")
+     */
+    public $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Invoice", mappedBy="customer")
+     */
+    public $invoices;
+
+    public function __construct()
+    {
+        $this->invoices = new ArrayCollection();
+    }
 
     public function getFullName(): string
     {

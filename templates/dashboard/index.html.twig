@@ -1,0 +1,75 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<h1>Bienvenue dans votre CRM</h1>
+
+	<div class="row">
+		<div class="col">
+			<h2>Les 5 dernières factures</h2>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Montant</th>
+						<th>Date</th>
+						<th>Client</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for i in lastInvoices %}
+						<tr>
+							<td>{{ i.id }}</td>
+							<td>{{ i.amount / 100 }}
+								€</td>
+							<td>{{ i.createdAt | date("d/m/y") }}</td>
+							<td>{{ i.customer.fullName }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="col">
+			<h2>Les 3 meilleurs clients</h2>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Client</th>
+						<th>Chiffre réalisé</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for c in bestCustomers %}
+						<tr>
+							<td>{{ c.fullName }}</td>
+							<td>{{ c.total / 100 }}
+								€</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="col">
+			<h2>Historique du chiffre d'affaire</h2>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Montant</th>
+						<th>Mois</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for l in lastSales %}
+						<tr>
+							<td>{{ (l.total / 100) | number_format(2, ',', ' ') }}
+								€</td>
+							<td>{{ l.mois }}/{{ l.annee }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

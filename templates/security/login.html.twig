@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>Connexion</h1>
+
+	{% if error %}
+		<p class="alert alert-danger">{{ error }}</p>
+	{% endif %}
+
+	{{ form_start(loginForm) }}
+
+	{{ form_widget(loginForm) }}
+
+	<button class="btn btn-success">Connexion</button>
+{% endblock %}

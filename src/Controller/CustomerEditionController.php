@@ -2,40 +2,30 @@
 
 namespace App\Controller;
 
+use App\Entity\Customer;
 use App\Form\CustomerType;
-use App\Repository\CustomerRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CustomerEditionController extends AbstractController
 {
-    private $repository;
-
     private $entity;
 
-    public function __construct(CustomerRepository $customerRepository, EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em)
     {
-        $this->repository = $customerRepository;
         $this->entity = $em;
     }
 
     /**
      * @Route("/customers/{id}/edit", name="customers_edit")
+     * @IsGranted("CAN_EDIT", subject="customer")
      */
-    public function edit(Request $request): Response
+    public function edit(Request $request, Customer $customer): Response
     {
-        $id = $request->attributes->get('id');
-
-        $customer = $this->repository->find($id);
-
-        if (!$customer) {
-            throw new NotFoundHttpException("Le client n°$id n'existe pas");
-        }
-
         $form = $this->createForm(CustomerType::class, $customer)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<h1>Modifier une facture</h1>
+
+	<a href="{{ path('invoices_index') }}" class="btn btn-primary">Voir mes factures</a>
+
+	{{ form_start(form) }}
+
+	{{ form_widget(form) }}
+
+	<button class="btn btn-success">Enregistrer</button>
+
+	{{ form_end(form) }}
+{% endblock %}
